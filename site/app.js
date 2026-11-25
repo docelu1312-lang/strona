@@ -10,22 +10,12 @@ function adresHttps(wartosc) {
 }
 
 const oferta = window.ofertaEbooka;
-const zakup = document.getElementById("zakup");
-const statusZakupu = document.getElementById("status-zakupu");
-const maCene = Number.isFinite(oferta.cenaPLN) && oferta.cenaPLN > 0;
-const koszyk = adresHttps(oferta.koszyk);
 const dokumenty = {
   regulamin: "Regulamin sklepu",
   prywatnosc: "Polityka prywatności",
   konsument: "Prawa konsumenta",
 };
 
-if (maCene) {
-  document.getElementById("cena").textContent = new Intl.NumberFormat("pl-PL", {
-    style: "currency",
-    currency: "PLN",
-  }).format(oferta.cenaPLN);
-}
 for (const [pole, nazwa] of Object.entries(dokumenty)) {
   const adres = adresHttps(oferta[pole]);
   if (adres) {
@@ -37,15 +27,6 @@ for (const [pole, nazwa] of Object.entries(dokumenty)) {
 }
 if (oferta.sprzedawca.trim()) document.getElementById("dane-sprzedawcy").textContent = oferta.sprzedawca;
 if (oferta.kontakt.trim()) document.getElementById("kontakt-sprzedawcy").textContent = oferta.kontakt;
-
-if (koszyk && maCene && oferta.dostawa.trim() && oferta.sprzedawca.trim() &&
-    oferta.kontakt.trim() && Object.keys(dokumenty).every(pole => adresHttps(oferta[pole]))) {
-  zakup.href = koszyk;
-  statusZakupu.textContent = oferta.dostawa;
-  document.getElementById("dostawa-faq").textContent = oferta.dostawa;
-} else {
-  zakup.addEventListener("click", () => statusZakupu.focus());
-}
 
 const podglad = document.getElementById("podglad");
 if (typeof podglad.showModal === "function") {
